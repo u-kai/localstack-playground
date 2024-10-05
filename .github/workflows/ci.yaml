@@ -25,7 +25,7 @@ jobs:
           pip install terraform-local
 
       - name: Setup Docker
-        uses: actions/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v2
 
       - name: Deploy LocalStack
         run: |
