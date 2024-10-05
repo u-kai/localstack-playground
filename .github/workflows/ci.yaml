@@ -24,9 +24,12 @@ jobs:
           pip install aws-sam-cli-local
           pip install terraform-local
 
+      - name: Setup Docker
+        uses: actions/setup-docker@v2
+
       - name: Deploy LocalStack
         run: |
-          docker-compose up -d
+          docker compose up -d
 
       - name: Deploy samlocal
         working-directory: ./sam
