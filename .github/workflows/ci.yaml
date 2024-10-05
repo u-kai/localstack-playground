@@ -1,0 +1,46 @@
+name: CI use LocalStack
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install aws-sam-cli-local
+          pip install terraform-local
+
+      - name: Deploy LocalStack
+        run: |
+          docker-compose up -d
+
+      - name: Deploy samlocal
+        working-directory: ./sam
+        run: |
+          samlocal build
+          samlocal deploy --stack-name samlocal --resolve-s3
+
+      - name: Deploy terraform
+        working-directory: ./tf
+        run: |
+          tflocal init 
+          tflocal apply -auto-approve
+
+      - name: Run tests
+        working-directory: ./sam
+        run: |
+          go test ./...

@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam
+
+  Sample SAM Template for sam
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 5
+    MemorySize: 128
+
+Resources:
+  PutItemFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: go1.x
+    Properties:
+      FunctionName: put-item
+      Handler: .
+      CodeUri: put-item/
+      Runtime: provided.al2023
+      Architectures:
+        - x86_64
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+          TABLE_NAME: playground_table
+
+  GetItemFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: go1.x
+    Properties:
+      FunctionName: get-item
+      Handler: .
+      CodeUri: get-item/
+      Runtime: provided.al2023
+      Architectures:
+        - x86_64
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+          TABLE_NAME: playground_table
+
+Outputs:
+  PutItemFunctionArn:
+    Value: !GetAtt PutItemFunction.Arn
+  GetItemFunctionArn:
+    Value: !GetAtt GetItemFunction.Arn
