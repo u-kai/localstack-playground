@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - main
-
+env:
+  AWS_DEFAULT_REGION: ap-northeast-1
 jobs:
   build:
     runs-on: ubuntu-latest
