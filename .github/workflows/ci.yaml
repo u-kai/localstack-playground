@@ -56,6 +56,14 @@ jobs:
           samlocal build
           samlocal deploy --stack-name samlocal --resolve-s3
 
+      - name: Cache Terraform
+        uses: actions/cache@v3
+        with:
+          path: ./tf/.terraform
+          key: ${{ runner.os }}-terraform-${{ hashFiles('tf/**/*.tf') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-
+
       - name: Deploy terraform
         working-directory: ./tf
         run: |
